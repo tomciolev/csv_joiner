@@ -19,18 +19,9 @@ inner_join <- function(df1,df2,col_name){
 }
 inner_join(df1,df2, "department_id")
 inner_join(df2,df1, "department_id")
+
+
 #LEFT JOIN
-df1 <- read.csv("~/csv_joiner/Departments.csv", header = T, sep = ",", dec = ".") 
-df2 <- read.csv("~/csv_joiner/Employees.csv", header = T, sep = ",", dec = ".")
-df1 <- read.csv("~/csv_joiner/orders.csv", header = T, sep = ",", dec = ".")
-k = 1
-departments[5,2] <- "HR"
-df2[7,2] <- NA
-col_name <- "employee_id"
-joined <- data.frame(matrix(ncol = ncol(df1)+ncol(df2), nrow = 0))
-colnames(joined) <- c(colnames(df1), colnames(df2))
-
-
 
 left_join <- function(df1, df2, col_name){
   joined <- data.frame(matrix(ncol = ncol(df1)+ncol(df2), nrow = 0))
@@ -55,3 +46,27 @@ left_join <- function(df1, df2, col_name){
 }
 left_join(df1,df2,"department_id")
 left_join(df2,df1,"department_id")
+
+join <- function(file_path1, file_path2, column_name, join_type){
+  df1 <- read.csv(file = file_path1, header = T, sep = ",", dec = ".")
+  df2 <- read.csv(file = file_path2, header = T, sep = ",", dec = ".")
+  if(!column_name %in% colnames(df1) || !column_name %in% colnames(df2)){
+    print("Podaj nazwę kolumny znajdującą się w obu plikach!")
+  }
+  else{
+    switch(join_type,
+           inner={
+             inner_join(df1, df2, column_name)
+           },
+           left={
+             left_join(df1, df2, column_name)
+           },
+           right={
+             help = df1
+             df1 = df2
+             df2 = help
+             left_join(df1, df2, column_name)
+           })
+  }
+} 
+join("~/csv_join/Departments.csv", "~/csv_join/Employees.csv", "department_id", "inner")
