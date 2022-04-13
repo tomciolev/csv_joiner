@@ -1,0 +1,11 @@
+order_id, employee_id, what
+1,1,tomato
+2,1,cucumber
+3,2,tomato
+4,3,oregano
+5,4,bread
+6,5,cucumber
+7,6,egg
+8,6,bread
+9,3,ham
+10,4,tomato
