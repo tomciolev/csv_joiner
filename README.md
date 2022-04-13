@@ -1,4 +1,5 @@
 # csv_joiner
+Solution to inner/left/right join csv files without using libraries.
 
 To turn on the solution you need to:
 1) Open csv_join.proj
