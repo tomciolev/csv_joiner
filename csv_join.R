@@ -1,28 +1,7 @@
-#GENERAL FUNCTION FOR JOINING
+#Reading arguments from cmd
 
-join <- function(file_path1, file_path2, column_name, join_type){
-  df1 <- read.csv(file = file_path1, header = T, sep = ",", dec = ".")
-  df2 <- read.csv(file = file_path2, header = T, sep = ",", dec = ".")
-  if(!column_name %in% colnames(df1) || !column_name %in% colnames(df2)){
-    print("Podaj nazwę kolumny znajdującą się w obu plikach!")
-  }
-  else{
-    switch(join_type,
-           inner={
-             inner_join(df1, df2, column_name)
-           },
-           left={
-             left_join(df1, df2, column_name)
-           },
-           right={
-             help = df1
-             df1 = df2
-             df2 = help
-             left_join(df1, df2, column_name)
-           })
-  }
-} 
-
+#!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE)
 
 #INNNER JOIN
 
@@ -65,6 +44,30 @@ left_join <- function(df1, df2, col_name){
   joined
 }
 
+#GENERAL FUNCTION FOR JOINING
 
+join <- function(file_path1, file_path2, column_name, join_type){
+  df1 <- read.csv(file = file_path1, header = T, sep = ",", dec = ".")
+  df2 <- read.csv(file = file_path2, header = T, sep = ",", dec = ".")
+  if(!column_name %in% colnames(df1) || !column_name %in% colnames(df2)){
+    print("Podaj nazwę kolumny znajdującą się w obu plikach!")
+  }
+  else{
+    switch(join_type,
+           inner={
+             inner_join(df1, df2, column_name)
+           },
+           left={
+             left_join(df1, df2, column_name)
+           },
+           right={
+             help = df1
+             df1 = df2
+             df2 = help
+             left_join(df1, df2, column_name)
+           })
+  }
+}
 
-
+#JOIN FUNCTION with arguments from cmd
+join(args[1], args[2], args[3], args[4])
