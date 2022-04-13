@@ -1,7 +1,30 @@
-#INNER JOIN
+#GENERAL FUNCTION FOR JOINING
 
-df1 <- read.csv("~/csv_join/Departments.csv", header = T, sep = ",", dec = ".") 
-df2 <- read.csv("~/csv_join/Employees.csv", header = T, sep = ",", dec = ".")
+join <- function(file_path1, file_path2, column_name, join_type){
+  df1 <- read.csv(file = file_path1, header = T, sep = ",", dec = ".")
+  df2 <- read.csv(file = file_path2, header = T, sep = ",", dec = ".")
+  if(!column_name %in% colnames(df1) || !column_name %in% colnames(df2)){
+    print("Podaj nazwę kolumny znajdującą się w obu plikach!")
+  }
+  else{
+    switch(join_type,
+           inner={
+             inner_join(df1, df2, column_name)
+           },
+           left={
+             left_join(df1, df2, column_name)
+           },
+           right={
+             help = df1
+             df1 = df2
+             df2 = help
+             left_join(df1, df2, column_name)
+           })
+  }
+} 
+
+
+#INNNER JOIN
 
 inner_join <- function(df1,df2,col_name){
   joined <- data.frame(matrix(ncol = ncol(df1)+ncol(df2), nrow = 0))
@@ -17,9 +40,6 @@ inner_join <- function(df1,df2,col_name){
   }
   joined
 }
-inner_join(df1,df2, "department_id")
-inner_join(df2,df1, "department_id")
-
 
 #LEFT JOIN
 
@@ -44,29 +64,7 @@ left_join <- function(df1, df2, col_name){
   }
   joined
 }
-left_join(df1,df2,"department_id")
-left_join(df2,df1,"department_id")
 
-join <- function(file_path1, file_path2, column_name, join_type){
-  df1 <- read.csv(file = file_path1, header = T, sep = ",", dec = ".")
-  df2 <- read.csv(file = file_path2, header = T, sep = ",", dec = ".")
-  if(!column_name %in% colnames(df1) || !column_name %in% colnames(df2)){
-    print("Podaj nazwę kolumny znajdującą się w obu plikach!")
-  }
-  else{
-    switch(join_type,
-           inner={
-             inner_join(df1, df2, column_name)
-           },
-           left={
-             left_join(df1, df2, column_name)
-           },
-           right={
-             help = df1
-             df1 = df2
-             df2 = help
-             left_join(df1, df2, column_name)
-           })
-  }
-} 
-join("~/csv_join/Departments.csv", "~/csv_join/Employees.csv", "department_id", "inner")
+
+
+
